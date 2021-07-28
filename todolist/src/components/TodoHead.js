@@ -1,5 +1,6 @@
 import React from 'react';
 import styled from 'styled-components';
+import { useTodoState } from './TodoContext';
 
 const TodoHeadStyled = styled.div`
     padding: 48px 32px 24px 32px;
@@ -23,11 +24,23 @@ const TodoHeadStyled = styled.div`
 `;
 
 export default function TodoHead() {
+    // done = false 개수 표시
+    const todos = useTodoState();
+    const undoneTasks = todos.filter(todo => !todo.done);
+
+    // 날짜 표시
+    const today = new Date();
+    const dateString = today.toLocaleDateString('ko-KR', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+    });
+    const dayName = today.toLocaleDateString('ko-KR', { weekday: 'long' });
     return (
         <TodoHeadStyled>
-            <h1>2021년 7월 27일</h1>
-            <div className='day'>화요일</div>
-            <div className='task-left'>할 일 2개 남음</div>
+            <h1>{dateString}</h1>
+            <div className='day'>{dayName}</div>
+            <div className='task-left'>할 일 {undoneTasks.length}개 남음</div>
         </TodoHeadStyled>
     );
 }
